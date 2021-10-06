@@ -7,9 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +49,9 @@ fun AppointmentScreen() {
 
 @Composable
 fun StatusSegment(status : String) {
+    val (isChecked,setChecked) = remember {
+        mutableStateOf(false)
+    }
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -58,16 +59,34 @@ fun StatusSegment(status : String) {
             .fillMaxWidth()
             .padding(15.dp)
     ) {
-        IconImage(image = R.drawable.ic_menu, desc = "menu") {}
+        IconImage(
+            imageNotActived = R.drawable.ic_menu,
+            imageActived =R.drawable.ic_menu,
+            desc = "menu",
+            isChecked = isChecked,
+            onItemClick = {setChecked(!isChecked)}
+        )
         Text(text = status,
             style = MaterialTheme.typography.h1
             )
-        IconImage(image = R.drawable.ic_notification, desc = "notifikasi") {}
+        IconImage(
+            imageNotActived = R.drawable.ic_notification,
+            desc = "notifikasi",
+            onItemClick = {setChecked(!isChecked)},
+            imageActived = R.drawable.ic_notification_active,
+            isChecked =isChecked
+        )
     }
 }
 
 @Composable
-fun IconImage(image : Int, desc : String, onItemClick:() -> Unit) {
+fun IconImage(
+    imageActived : Int,
+    imageNotActived : Int,
+    desc : String,
+    isChecked : Boolean,
+    onItemClick:() -> Unit
+) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -77,7 +96,8 @@ fun IconImage(image : Int, desc : String, onItemClick:() -> Unit) {
             .padding(10.dp)
     ){
         Icon(
-            painter = painterResource(id = image),
+            painter = if (isChecked) painterResource(id = imageActived)
+            else painterResource(id = imageNotActived),
             contentDescription = desc,
             modifier = Modifier
                 .size(20.dp)
