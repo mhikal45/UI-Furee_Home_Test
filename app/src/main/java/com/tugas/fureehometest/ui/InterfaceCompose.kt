@@ -1,5 +1,6 @@
 package com.tugas.fureehometest.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +54,7 @@ fun StatusSegment(status : String) {
     val (isChecked,setChecked) = remember {
         mutableStateOf(false)
     }
+    val context = LocalContext.current
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -64,7 +67,10 @@ fun StatusSegment(status : String) {
             imageActived =R.drawable.ic_menu,
             desc = "menu",
             isChecked = isChecked,
-            onItemClick = {setChecked(!isChecked)}
+            onItemClick = {
+                setChecked(!isChecked)
+                Toast.makeText(context,"Action Not Given Yet",Toast.LENGTH_SHORT).show()
+            }
         )
         Text(text = status,
             style = MaterialTheme.typography.h1
@@ -72,7 +78,9 @@ fun StatusSegment(status : String) {
         IconImage(
             imageNotActived = R.drawable.ic_notification,
             desc = "notifikasi",
-            onItemClick = {setChecked(!isChecked)},
+            onItemClick = { setChecked(!isChecked)
+                          if (isChecked) Toast.makeText(context," Notification Turned Off",Toast.LENGTH_SHORT).show()
+                          else Toast.makeText(context,"Notification Turned On",Toast.LENGTH_SHORT).show()},
             imageActived = R.drawable.ic_notification_active,
             isChecked =isChecked
         )
@@ -145,6 +153,7 @@ fun AppointedSegment() {
 
 @Composable
 fun CostSegment() {
+    val context = LocalContext.current
     Box(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -203,7 +212,7 @@ fun CostSegment() {
                 thickness = 1.dp
             )
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { Toast.makeText(context,"Action Not Given Yet",Toast.LENGTH_SHORT).show() },
                 colors = ButtonDefaults.buttonColors(backgroundColor = cream),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -307,8 +316,9 @@ fun RadioGroup(
 
 @Composable
 fun ConfirmButton() {
+    val context = LocalContext.current
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { Toast.makeText(context,"Action Not Given Yet",Toast.LENGTH_SHORT).show() },
         colors = ButtonDefaults
             .buttonColors(backgroundColor = orange1),
         modifier = Modifier
